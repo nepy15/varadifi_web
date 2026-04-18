@@ -2,6 +2,35 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { initializeApp } from "firebase/app"
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+
+const firebaseApp = initializeApp({
+  apiKey: "AIzaSyCsHup70X2ggKKbHSv9sLIP0odpExwVGBc",
+  authDomain: "varadifi-app.firebaseapp.com",
+  projectId: "varadifi-app",
+  storageBucket: "varadifi-app.firebasestorage.app",
+  messagingSenderId: "1074929957492",
+  appId: "1:1074929957492:web:05ebea86da6f1b5eccef21",
+  measurementId: "G-V9KZZCGWFV"
+});
+
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+const ordersCollection = collection(db, "orders");
+const ordersSnapshot = await getDocs(ordersCollection);
+
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("User is signed in:", user);
+  } else {
+    console.log("No user is signed in.");
+  }
+});
+
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,7 +56,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="bg-background text-foreground">{children}</body>
+      <body className="bg-background flex min-h-screen text-foreground">{children}</body>
     </html>
   );
 }
