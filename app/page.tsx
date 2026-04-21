@@ -1,16 +1,87 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useEffect, useState } from 'react';
+
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { useRouter } from 'next/navigation';
+
+import NavBar from "./ui/navbar";
+import Login from "./login";
+
+const firebaseApp = initializeApp({
+  apiKey: "AIzaSyCsHup70X2ggKKbHSv9sLIP0odpExwVGBc",
+  authDomain: "varadifi-app.firebaseapp.com",
+  projectId: "varadifi-app",
+  storageBucket: "varadifi-app.firebasestorage.app",
+  messagingSenderId: "1074929957492",
+  appId: "1:1074929957492:web:05ebea86da6f1b5eccef21",
+  measurementId: "G-V9KZZCGWFV"
+});
+
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+const ordersCollection = collection(db, "orders");
+const ordersSnapshot = await getDocs(ordersCollection);
+
+export default function Page() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  function refreshPage() {
+    console.log("Refreshing page...");
+    window.location.reload();
+  }
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Login auth={auth} />;
+  }
+
   return (
-      <main className="flex flex-col gap-8 items-center w-full">
-        <div className="bg-green-950 w-70 h-20 relative border-2 border-lime-500 rounded-lg items-center justify-center flex mt-10 hover:border-lime-400 transition-colors duration-300">
-          <h1 className="text-2xl font-bold text-foreground">Varadifi Admin</h1>
+    <div className="flex min-h-screen">
+      <NavBar />
+      <main className="flex-1 justify-items-center">
+        <div className='mb-4 mt-15 flex flex-row gap-2 items-center p-2'>
+          <h1 className="text-2xl font-bold">Orders</h1>
+          <div className='p-2 bg-green-950 rounded-full ml-5 active:bg-lime-600 hover:bg-lime-700 cursor-pointer absolute right-15 top-15' onClick={refreshPage}>Reload</div>
         </div>
-        <div className="w-full h-50 items-center flex justify-center gap-30">
-          <div className="w-50 h-25 bg-gray-700 rounded-3xl"></div>
-          <div className="w-50 h-25 bg-gray-700 rounded-3xl"></div>
-          <div className="w-50 h-25 bg-gray-700 rounded-3xl"></div>
-        </div>
+        <ul>
+          {ordersSnapshot.docs.map((doc) => (
+            <li key={doc.id}>
+              <div className='bg-light-bg m-5 w-80 h-40 rounded-2xl justify-items-center'>
+                <p className='mb-5 font-semibold '>{doc.data().name}</p>
+                <p className=''>
+                  <label className='font-semibold'>Nem:</label> {doc.data().gender}
+                </p>
+                <p>
+                  <label className='font-semibold'>Telefonszam:</label> {doc.data().phoneNumber}
+                </p>
+                <p>
+                  <label className='font-semibold'>Rendelési ID:</label> {doc.data().orderId}
+                </p>
+                <p className=''>
+                  <label className='font-semibold'>Méret:</label> {doc.data().size}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+
       </main>
+    </div>
   );
 }
