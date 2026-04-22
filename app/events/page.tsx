@@ -82,7 +82,7 @@ export default function Page() {
                     <input type="text" id="eventDescription" placeholder="Leiras (max 80 karakter)" className="bg-light-bg rounded-md p-2 mb-4 w-60 hover:bg-green-950 transition-colors duration-200" maxLength={80}/>
                     <input type="text" id="eventLocation" placeholder="Helyszín" className="bg-light-bg rounded-md p-2 mb-4 w-60 hover:bg-green-950 transition-colors duration-200" />
                     <div className="w-60 h-min flex items-center justify-center gap-2">
-                        <select id="eventMonth" className="bg-light-bg rounded-md p-2 mb-4 w-30 h-10 hover:bg-green-950 transition-colors duration-200">
+                        <select id="eventMonth" className="bg-light-bg rounded-md p-2 mb-4 w-30 h-10 hover:bg-green-950 transition-colors duration-200">wd
                             <option className="bg-background" value="" >Honap</option>
                             <option className="bg-background" value="JAN">Január</option>
                             <option className="bg-background" value="FEB">Február</option>
