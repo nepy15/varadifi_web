@@ -34,8 +34,9 @@ export default function Page() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     topic: "Varadifi",
-                    title: "Uj alkalom!",
-                    body: "Gyere es nezd meg az uj alkalmakat.",
+                    title: "Uj esemeny",
+                    body: "Uj esemeny erkezett!",
+                    icon: "icon"
                 }),
             });
             if (!res.ok) throw new Error();

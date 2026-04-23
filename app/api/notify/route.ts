@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import admin from '@/lib/firebaseAdmin';
 
 export async function POST(req: NextRequest) {
-    const { topic, title, body, data } = await req.json();
+    const { topic, title, body, icon, data } = await req.json();
 
-    if (!topic || !title || !body) {
+    if (!topic || !title || !body ) {
         return NextResponse.json(
             { error : "topic, title and body are required" },
             { status : 400 }
@@ -15,6 +15,21 @@ export async function POST(req: NextRequest) {
         const message: admin.messaging.Message = {
             topic,
             notification: { title, body },
+            android: {
+                notification: {
+                    title,
+                    body,
+                    icon: icon ?? "icon",
+                    color: "#FFFFFF"
+                }
+            },
+            apns: {
+                payload: {
+                    aps: {
+                        alert: { title, body }
+                    }
+                }
+            },
             ...(data && { data }),
         };
 
