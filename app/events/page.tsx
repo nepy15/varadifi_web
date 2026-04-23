@@ -26,6 +26,26 @@ export default function Page() {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
+    const sendNotification = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch("/api/notify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    topic: "Varadifi",
+                    title: "Uj alkalom!",
+                    body: "Gyere es nezd meg az uj alkalmakat.",
+                }),
+            });
+            if (!res.ok) throw new Error();
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     async function submitEvent() {
         const eventName = (document.getElementById('eventName') as HTMLInputElement).value;
         const eventTime = (document.getElementById('eventTime') as HTMLInputElement).value;
@@ -48,6 +68,7 @@ export default function Page() {
                 day: eventDay,
                 id: eventId
             });
+            sendNotification();
                 alert('Event added successfully');
         }
 
@@ -74,8 +95,8 @@ export default function Page() {
     return (
         <div className="flex min-h-screen">
             <NavBar />
-            <main className="flex-1 justify-items-center">
-                <h1 className="text-2xl font-semibold m-10">Event hozzáadása</h1>
+            <main className="w-full justify-items-center">
+                <h1 className="text-2xl font-semibold m-10 text-center">Event hozzáadása</h1>
                 <div className="flex flex-col gap-4 w-1/2 mx-auto items-center">
                     <input type="text" id="eventName" placeholder="Event Neve" className="bg-light-bg rounded-md p-2 mb-4 w-60 hover:bg-green-950 transition-colors duration-200" />
                     <input type="text" id="eventTime" placeholder="Ideje (ora pl.: 19:00-21:00)" className="bg-light-bg rounded-md p-2 mb-4 w-60 hover:bg-green-950 transition-colors duration-200" />

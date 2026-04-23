@@ -52,14 +52,14 @@ export default function Page() {
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen w-full justify-items-center">
       <NavBar />
-      <main className="flex-1 justify-items-center">
-        <div className='mb-4 mt-15 flex flex-row gap-2 items-center p-2'>
+      <main className="w-full justify-items-center">
+        <div className='mb-4 mt-15 flex p-2 items-center justify-center'>
           <h1 className="text-2xl font-bold">Rendelesek</h1>
           <div className='p-2 bg-green-950 rounded-full ml-5 active:bg-lime-600 hover:bg-lime-700 cursor-pointer absolute right-15 top-15' onClick={refreshPage}>Reload</div>
         </div>
-        <ul>
+        <ul className='items-center justify-center flex'>
           {ordersSnapshot.docs.map((doc) => (
             <li key={doc.id}>
               <div className='bg-light-bg m-5 w-80 h-40 rounded-2xl justify-items-center flex flex-col relative'>
