@@ -55,6 +55,8 @@ export default function Page() {
         const eventMonth = (document.getElementById('eventMonth') as HTMLInputElement).value;
         const eventDay = (document.getElementById('eventDay') as HTMLInputElement).valueAsNumber;
         const eventId = await getCountFromServer(eventsCollection).then((snapshot) => snapshot.data().count + 1);
+        const showLink = (document.getElementById('showLink') as HTMLInputElement).checked;
+        const linkAddress = (document.getElementById('linkAddress') as HTMLInputElement).value
 
         if (!eventName || !eventTime || !eventDescription || !eventLocation || !eventMonth || !eventDay) {
             alert('Please fill in all fields');
@@ -67,14 +69,30 @@ export default function Page() {
                 location: eventLocation,
                 month: eventMonth,
                 day: eventDay,
-                id: eventId
+                id: eventId,
+                enableLink: showLink,
+                link: linkAddress,
             });
             sendNotification();
-                alert('Event added successfully');
+            alert('Event added successfully');
         }
 
 
     }
+
+
+    const [ checked, setCheck ] = useState(true);
+
+    function onCheck() {
+        if(!checked) {
+            setCheck(true);
+        } else {
+            setCheck(false);
+        }
+
+        console.log(checked);
+    }
+
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -103,7 +121,16 @@ export default function Page() {
                     <input type="text" id="eventTime" placeholder="Ideje (ora pl.: 19:00-21:00)" className="bg-light-bg rounded-md p-2 mb-4 w-60 hover:bg-green-950 transition-colors duration-200" />
                     <input type="text" id="eventDescription" placeholder="Leiras (max 80 karakter)" className="bg-light-bg rounded-md p-2 mb-4 w-60 hover:bg-green-950 transition-colors duration-200" maxLength={80}/>
                     <input type="text" id="eventLocation" placeholder="Helyszín" className="bg-light-bg rounded-md p-2 mb-4 w-60 hover:bg-green-950 transition-colors duration-200" />
-                    <div className="w-60 h-min flex items-center justify-center gap-2">
+                    <div className=" gap-3 bg-light-bg w-auto h-auto p-1.5 rounded-md">
+                        <div className="w-full h-auto flex gap-3 justify-center">
+                            <p>link</p>
+                            <input type="checkbox" id="showLink" className="h-5" onChange={onCheck}/>
+                        </div>
+                        <div className="bottom-0 h-8 w-fit overflow-auto" hidden={checked}>
+                            <input type="text" id="linkAddress" className="bottom-0 left-0 h-8 bg-background" placeholder="masold ide a linket" />
+                        </div>
+                        </div>
+                    <div className="w-60 h-min flex justify-center gap-2">
                         <select id="eventMonth" className="bg-light-bg rounded-md p-2 mb-4 w-30 h-10 hover:bg-green-950 transition-colors duration-200">wd
                             <option className="bg-background" value="" >Honap</option>
                             <option className="bg-background" value="JAN">Január</option>
