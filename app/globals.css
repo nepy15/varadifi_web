@@ -4,4 +4,5 @@
   --color-background: #131313;
   --color-foreground: #E5E2E1;
   --color-light-bg: #201F1F;
+  --color-opacity-bg: rgba(19, 19, 19, 0.7);
 }
