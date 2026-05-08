@@ -86,7 +86,7 @@ export default function Page() {
                                 onChange={(e) => setNewId(e.target.value)} 
                                 className="text-center bg-light-bg w-20 h-8 rounded-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none mr-2"
                             />
-                            <button onClick={updateId} className="bg-light-bg text-white px-4 py-2 rounded-2xl">Update ID</button>
+                            <button onClick={updateId} className="bg-light-bg text-white px-4 py-2 rounded-2xl cursor-pointer">Update ID</button>
                         </div>
                     )}
                 </div>
@@ -100,13 +100,13 @@ export default function Page() {
                                 <div className="flex gap-3">
                                     <button 
                                         onClick={() => { setSelectedDocId(doc.id); setNewId(doc.data().id.toString()); }} 
-                                        className="bg-green-500 text-white px-3 py-1 rounded"
+                                        className="bg-green-500 text-white px-3 py-1 rounded cursor-pointer"
                                     >
                                         Edit ID
                                     </button>
                                     <button 
                                         onClick={() => deleteEvent(doc.id)} 
-                                        className="bg-red-500 text-white px-3 py-1 rounded ml-2"
+                                        className="bg-red-500 text-white px-3 py-1 rounded ml-2 cursor-pointer"
                                     >
                                         Delete
                                     </button>
