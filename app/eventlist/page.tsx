@@ -25,7 +25,7 @@ const eventsCollection = collection(db, "events");
 export default function Page() {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState<any[]>([]);
     const [selectedDocId, setSelectedDocId] = useState(null);
     const [newId, setNewId] = useState('');
 
@@ -43,7 +43,7 @@ export default function Page() {
         setNewId('');
     };
 
-    const deleteEvent = async (docId) => {
+    const deleteEvent = async (docId: string) => {
         await deleteDoc(doc(db, "events", docId));
         fetchEvents();
     };
